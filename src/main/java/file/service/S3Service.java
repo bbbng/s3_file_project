@@ -47,7 +47,7 @@ public class S3Service {
 		}
 		
 		// 파일 정보 수집
-		String filePath = "H://eclipse-workspace//ce//97.data//" + DIR_NAME;
+		String filePath = "//home//ubuntu//" + DIR_NAME;
 		String attachmentOriginalFileName = file.getOriginalFilename();
 		UUID uuid = UUID.randomUUID();
 		String attachmentFileName = uuid.toString() + "_" + attachmentOriginalFileName;
