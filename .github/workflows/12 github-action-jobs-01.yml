@@ -1,0 +1,29 @@
+name: Jobs 액션으로 순서대로, 조건에 따라 실행
+on: workflow_dispatch
+jobs:
+  job1:
+    runs-on: ubuntu-latest
+    steps:
+      - id: step1
+        run: echo "word=GitHub" >> $GITHUB_OUTPUT
+      - id: step2
+        run: echo "word=Actions" >> $GITHUB_OUTPUT
+    outputs:
+      word1: ${{ steps.step1.outputs.word }}
+      word2: ${{ steps.step2.outputs.word }}
+  job2:
+    runs-on: ubuntu-latest
+    needs: job1
+    steps:
+      - run: echo "${{ needs.job1.outputs.word1 }}"
+      - run: echo "${{ needs.job1.outputs.word2 }}"
+  echo_if:
+    runs-on: ubuntu-latest
+    if: github.ref_name == 'main'
+    steps:
+      - run: echo 'Hello, Main!'
+  skip_ci:
+    runs-on: ubuntu-latest
+    if: contains(github.event.head_commit.message, 'skip ci')
+    steps:
+      - run: echo 'Hello, Skip CI!'
