@@ -1,4 +1,4 @@
-name: Checkout Workflow
+name: 체크아웃 액션
 on: workflow_dispatch
 jobs:
   checkout:
@@ -6,3 +6,7 @@ jobs:
     steps:
       - run: ls -al
       - uses: actions/checkout@v4
+        with:
+          repository: actions/checkout
+          ref: v4
+      - run: ls -al
