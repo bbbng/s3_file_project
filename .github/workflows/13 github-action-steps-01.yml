@@ -1,0 +1,45 @@
+name: 다른 스텝에 결과 전달하기
+on: workflow_dispatch
+jobs:
+  calculate-features:
+    runs-on: ubuntu-latest
+    steps:
+      - id: generate-num1
+        run: echo "num=$(($RANDOM % 10 + 100))" >> "$GITHUB_OUTPUT"
+      - id: generate-num2
+        run: echo "num=$(($RANDOM % 10 + 100))" >> "$GITHUB_OUTPUT"
+      - run: echo $((${{ steps.generate-num1.outputs.num }} + ${{ steps.generate-num2.outputs.num }}))
+      - run: echo $((${{ steps.generate-num1.outputs.num }} - ${{ steps.generate-num2.outputs.num }}))
+      - run: echo $((${{ steps.generate-num1.outputs.num }} * ${{ steps.generate-num2.outputs.num }}))
+      - run: echo $((${{ steps.generate-num1.outputs.num }} / ${{ steps.generate-num2.outputs.num }}))
+  num-job:
+    runs-on: ubuntu-latest
+    steps:
+      - id: generate-num
+        run: echo "num=$(($RANDOM % 2))" >> "$GITHUB_OUTPUT"
+      - if: steps.generate-num.outputs.num == 0
+        run: echo "zero steps"
+      - if: steps.generate-num.outputs.num == 1
+        run: echo "not zero steps"
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - id: random
+        run: exit $(($RANDOM % 2 == 0))
+      - if: always()
+        run: echo ${{ steps.random.outcome }}
+  backup-steps:
+    runs-on: ubuntu-latest
+    steps:
+      - name: first-step
+        run: exit 1
+      - name: backup-step
+        if: failure()
+        run: echo backup
+  keep-going-work:
+    runs-on: ubuntu-latest
+    steps:
+      - id: dev
+        continue-on-error: true
+        run: exit 1
+      - run: echo "Keep going job"
