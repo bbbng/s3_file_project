@@ -1,0 +1,25 @@
+# ./.github/workflows/workflow_call.yml
+# 다른 워크플로가 호출할 때만 동작하므로 직접 실행 불가.
+# on: workflow 활성화 이벤트 정의
+# workflow_call: 다른 workflow에 의해 호출 가능 정의
+# inputs: 호출 workflow에서 이 workflow로 전달할 입력 파라미터 정의
+# environment: 입력 파라미터 값(이름)
+# required: true: 입력 파라미터 필수 조건
+# type: string: 입력 파라미터 형식
+
+name: Workflows Names - called_workflow
+run-name: Runs Names - called_workflow 🚀
+
+on:
+  workflow_call:
+    inputs:
+      environment:
+        required: true
+        type: string
+
+jobs:
+  Jobs-Names-called_workflow:
+    runs-on: ubuntu-latest
+    steps:
+      - name: echo enviroment
+        run: echo Setup for ${{ inputs.environment }}
