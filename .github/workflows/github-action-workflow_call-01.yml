@@ -1,5 +1,6 @@
 # .github/workflows/github-action-workflow_call-01.yml
 # github-action-workflow_call.yml을 호출하는 파일
+# 경로 시작할 때 반드시 ./.github 로 시작해야 함.
 
 name: Workflows Names - github-action-workflow_call-01
 run-name: Runs Names - github-action-workflow_call-01 🚀
@@ -8,6 +9,6 @@ on:
 
 jobs:
   Jobs-Names-github-action-workflow_call-01:
-    uses: ./github-action-workflow_call.yml
+    uses: ./.github/workflows/github-action-workflow_call.yml
     with:
       environment: production
